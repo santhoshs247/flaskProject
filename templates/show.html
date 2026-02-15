@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Users</title>
+</head>
+<body align="center">
+
+    <h1 align="center">User List</h1>
+
+    <table align="center">
+        <tr>
+            <th>ID</th>
+            <th>NAME</th>
+            <th>EMAIL</th>
+        </tr>
+
+        {% for X in DATA %}
+        <tr>
+            <td>{{ X[0] }}</td>
+            <td>{{ X[1] }}</td>
+            <td>{{ X[2] }}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+</body>
+</html>
