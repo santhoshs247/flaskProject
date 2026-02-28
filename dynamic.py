@@ -35,6 +35,7 @@ def submit_form():
                 {'name': a, 'email': b, 'password': c})
             result = connection.execute(text('SELECT * FROM form'))
             connection.commit()
+            connection.close()
     
     # Fetch results for display
     rows = result.fetchall()
