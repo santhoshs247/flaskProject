@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text  # Import 'text' for executing raw SQL
 
@@ -40,7 +40,48 @@ def submit_form():
     # Fetch results for display
     rows = result.fetchall()
     
-    return f"<h2>Thank you! Your data has been stored successfully.</h2>"
+    return render_template('login.html')
+
+# ROUTE FOR LOGIN PAGE
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+# ROUTE TO HANDLE LOGIN FORM SUBMISSION
+@app.route('/login', methods=['POST'])
+def login_submit():
+    name = request.form.get('name')
+    password = request.form.get('password')
+    
+    # Query database to verify credentials
+    with app.app_context():
+        with db.engine.connect() as connection:
+            result = connection.execute(
+                text('SELECT * FROM form WHERE name = :name AND password = :password'),
+                {'name': name, 'password': password}
+            )
+            user = result.fetchone()
+            connection.close()
+    
+    # Check if user exists and credentials match
+    if user:
+        # Login successful 
+        return render_template('flask.html')
+    else:
+        # Login failed error
+        return f"<p>Invalid username or password</p>"
+
+# ROUTE TO DISPLAY USERS IN DB PAGE
+@app.route('/db')
+def show_db_users():
+    # Query all users from the database
+    with app.app_context():
+        with db.engine.connect() as connection:
+            result = connection.execute(text('SELECT name, email FROM form'))
+            users = result.fetchall()
+            connection.close()
+    
+    return render_template('db.html', users=users)
 
 # RUN THE APP
 if __name__ == '__main__':
