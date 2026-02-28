@@ -37,9 +37,12 @@ def check_session():
     session['last_activity'] = datetime.now().isoformat()
     return True
 
-# ROUTE TO DISPLAY THE FORM
+# ROUTE TO DISPLAY THE FORM (PROTECTED)
 @app.route('/')
 def sql_form():
+    # If user is already logged in, redirect to flask page
+    if check_session():
+        return redirect(url_for('flask_page'))
     return render_template('sql.html')
 
 # ROUTE TO HANDLE FORM SUBMISSION
@@ -70,6 +73,9 @@ def submit_form():
 # ROUTE FOR LOGIN PAGE
 @app.route('/login')
 def login():
+    # If user is already logged in, redirect to flask page
+    if check_session():
+        return redirect(url_for('flask_page'))
     # Clear any existing session on login page visit
     session.clear()
     return render_template('login.html')
@@ -96,7 +102,7 @@ def login_submit():
         session['logged_in'] = True
         session['username'] = name
         session['last_activity'] = datetime.now().isoformat()
-        # Redirect to /flask route to set up session properly
+        # Redirect to flask.html after successful login
         return redirect(url_for('flask_page'))
     else:
         # Login failed error
