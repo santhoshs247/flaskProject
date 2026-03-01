@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 app = Flask(__name__)
 
 # SECRET KEY FOR SESSION MANAGEMENT
-app.secret_key = 'your_secret_key_here'
+app.secret_key = 'sandy566'
 
 # DATABASE CONFIGURATION - Use 'flask' database
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://root:sandy566@127.0.0.1:3306/flask"
